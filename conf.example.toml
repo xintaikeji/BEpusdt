@@ -47,6 +47,7 @@ aptos = "https://aptos-rest.publicnode.com/"
 xlayer = "https://xlayerrpc.okx.com/"
 polygon = "https://polygon-rpc.com/"
 arbitrum = "https://arb1.arbitrum.io/rpc"
+plasma = "https://9745.rpc.thirdweb.com/"
 ethereum = "https://ethereum.publicnode.com/"
 base = "https://base-public.nodies.app/"
 

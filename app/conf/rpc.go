@@ -62,6 +62,15 @@ func GetArbitrumRpcEndpoint() string {
 	return defaultArbitrumRpcEndpoint
 }
 
+func GetPlasmaRpcEndpoint() string {
+	if cfg.EvmRpc.Plasma != "" {
+
+		return cfg.EvmRpc.Plasma
+	}
+
+	return defaultPlasmaRpcEndpoint
+}
+
 func GetEthereumRpcEndpoint() string {
 	if cfg.EvmRpc.Ethereum != "" {
 

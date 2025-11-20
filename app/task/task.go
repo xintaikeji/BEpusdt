@@ -24,6 +24,7 @@ func Init() error {
 	ethInit()
 	polygonInit()
 	arbitrumInit()
+	plasmaInit()
 	xlayerInit()
 	baseInit()
 

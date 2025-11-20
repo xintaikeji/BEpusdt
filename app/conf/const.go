@@ -20,6 +20,7 @@ const (
 	defaultXlayerRpcEndpoint   = "https://xlayerrpc.okx.com/"                     // 默认Xlayer RPC节点
 	defaultPolygonRpcEndpoint  = "https://polygon-public.nodies.app/"             // 默认Polygon RPC节点 官方 https://polygon-rpc.com 存在速率限制
 	defaultArbitrumRpcEndpoint = "https://arb1.arbitrum.io/rpc"                   // 默认Arbitrum One RPC节点
+	defaultPlasmaRpcEndpoint   = "https://9745.rpc.thirdweb.com/"                 // 默认Plasma RPC节点，第三方节点，速率限制且稳定性未知
 	defaultEthereumRpcEndpoint = "https://ethereum-public.nodies.app/"            // 默认Ethereum RPC节点
 	defaultBaseRpcEndpoint     = "https://base-public.nodies.app/"                // 默认Base RPC节点 官方 https://mainnet.base.org 存在速率限制
 	defaultAptosRpcEndpoint    = "https://aptos-rest.publicnode.com/"             // 默认Aptos RPC节点
@@ -33,6 +34,7 @@ const (
 	UsdtXlayer   = "0x1e4a5963abfd975d8c9021ce480b42188849d41d"                         // Xlayer USDT合约地址
 	UsdtPolygon  = "0xc2132d05d31c914a87c6611c10748aeb04b58e8f"                         // Polygon USDT合约地址
 	UsdtArbitrum = "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9"                         // Arbitum One USDT合约地址
+	UsdtPlasma   = "0xb8ce59fc3717ada4c02eadf9682a9e934f625ebb"                         // Plasma USDT合约地址
 	UsdtSolana   = "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB"                       // Solana USDT合约地址
 	SolSplToken  = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"                        // Solana SPL Token合约地址
 	UsdtAptos    = "0x357b0b74bc833e95a115ad22604854d6b0fca151cecd94111770e5d6ffc9dc2b" // Aptos USDT合约地址
@@ -54,6 +56,7 @@ const (
 	UsdtXlayerDecimals   = -6  // USDT Xlayer小数位数
 	UsdtPolygonDecimals  = -6  // USDT Polygon小数位数
 	UsdtArbitrumDecimals = -6  // USDT Arbitrum小数位数
+	UsdtPlasmaDecimals   = -6  // USDT Plasma小数位数
 	UsdtAptosDecimals    = -6  // USDT Aptos小数位数
 	UsdtSolanaDecimals   = -6  // USDT Solana小数位数
 
