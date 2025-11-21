@@ -30,6 +30,7 @@ const (
 	OrderTradeTypeUsdcPolygon  = "usdc.polygon"
 	OrderTradeTypeUsdtArbitrum = "usdt.arbitrum"
 	OrderTradeTypeUsdcArbitrum = "usdc.arbitrum"
+	OrderTradeTypeUsdtPlasma   = "usdt.plasma"
 	OrderTradeTypeUsdtErc20    = "usdt.erc20"
 	OrderTradeTypeUsdcErc20    = "usdc.erc20"
 	OrderTradeTypeUsdtBep20    = "usdt.bep20"
@@ -173,6 +174,9 @@ func GetDetailUrl(tradeType, hash string) string {
 	if help.InStrings(tradeType, []string{OrderTradeTypeUsdtArbitrum, OrderTradeTypeUsdcArbitrum}) {
 		return "https://arbiscan.io/tx/" + hash
 	}
+	if help.InStrings(tradeType, []string{OrderTradeTypeUsdtPlasma}) {
+		return "https://plasmascan.to/tx/" + hash
+	}
 	if help.InStrings(tradeType, []string{OrderTradeTypeUsdcBase}) {
 		return "https://basescan.org/tx/" + hash
 	}
@@ -296,6 +300,8 @@ func getTokenAtomicityByTradeType(tradeType string) (decimal.Decimal, int) {
 	case OrderTradeTypeUsdtPolygon:
 		return conf.GetUsdtAtomicity()
 	case OrderTradeTypeUsdtArbitrum:
+		return conf.GetUsdtAtomicity()
+	case OrderTradeTypeUsdtPlasma:
 		return conf.GetUsdtAtomicity()
 	case OrderTradeTypeUsdcTrc20:
 		return conf.GetUsdcAtomicity()

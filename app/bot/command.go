@@ -116,6 +116,7 @@ func cmdStateHandle(ctx context.Context, b *bot.Bot, u *models.Update) {
 		model.OrderTradeTypeUsdtSolana:   "USDT.Solana",
 		model.OrderTradeTypeUsdtPolygon:  "USDT.Polygon",
 		model.OrderTradeTypeUsdtArbitrum: "USDT.Arbitrum",
+		model.OrderTradeTypeUsdtPlasma:   "USDT.Plasma",
 		model.OrderTradeTypeUsdcTrc20:    "USDC.Trc20",
 		model.OrderTradeTypeUsdcErc20:    "USDC.Erc20",
 		model.OrderTradeTypeUsdcBep20:    "USDC.Bep20",
@@ -144,6 +145,7 @@ func cmdStateHandle(ctx context.Context, b *bot.Bot, u *models.Update) {
 		model.OrderTradeTypeUsdtSolana:   conf.Solana,
 		model.OrderTradeTypeUsdtPolygon:  conf.Polygon,
 		model.OrderTradeTypeUsdtArbitrum: conf.Arbitrum,
+		model.OrderTradeTypeUsdtPlasma:   conf.Plasma,
 		model.OrderTradeTypeUsdtErc20:    conf.Ethereum,
 		model.OrderTradeTypeUsdcBase:     conf.Base,
 	}
@@ -156,6 +158,7 @@ func cmdStateHandle(ctx context.Context, b *bot.Bot, u *models.Update) {
 		conf.Solana:   "Solana",
 		conf.Polygon:  "Polygon",
 		conf.Arbitrum: "Arbitrum",
+		conf.Plasma:   "Plasma",
 		conf.Ethereum: "Ethereum",
 		conf.Base:     "Base",
 	}

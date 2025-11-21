@@ -21,6 +21,7 @@ const (
 	Xlayer   = "xlayer"
 	Polygon  = "polygon"
 	Arbitrum = "arbitrum"
+	Plasma   = "plasma"
 	Ethereum = "ethereum"
 	Base     = "base"
 )

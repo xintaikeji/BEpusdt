@@ -29,6 +29,7 @@ type Conf struct {
 		Xlayer   string `toml:"xlayer"`
 		Polygon  string `toml:"polygon"`
 		Arbitrum string `toml:"arbitrum"`
+		Plasma   string `toml:"plasma"`
 		Ethereum string `toml:"ethereum"`
 		Base     string `toml:"base"`
 	} `toml:"evm_rpc"`

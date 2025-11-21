@@ -13,6 +13,7 @@
 |    Solana    |  `usdt.solana`  |  `usdc.solana`  |            |
 |   X-Layer    |  `usdt.xlayer`  |  `usdc.xlayer`  |            |
 | Arbitrum-One | `usdt.arbitrum` | `usdc.arbitrum` |            |
+|    Plasma    |  `usdt.plasma`  |  `NOT SUPPORT`  |            |
 |     Base     |  `NOT SUPPORT`  |   `usdc.base`   |            |
 
 ---
