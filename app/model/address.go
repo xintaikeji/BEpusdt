@@ -22,11 +22,13 @@ const (
 	TokenTypeUSDT TokenType = "USDT"
 	TokenTypeUSDC TokenType = "USDC"
 	TokenTypeTRX  TokenType = "TRX"
+	TokenTypeBNB  TokenType = "BNB"
 )
 
 // SupportTradeTypes 目前支持的收款交易类型
 var SupportTradeTypes = []string{
 	OrderTradeTypeTronTrx,
+	OrderTradeTypeBnbBep20,
 	OrderTradeTypeUsdtTrc20,
 	OrderTradeTypeUsdtErc20,
 	OrderTradeTypeUsdtBep20,
@@ -72,6 +74,9 @@ var tradeTypeTable = map[string]TokenType{
 
 	// TRX
 	OrderTradeTypeTronTrx: TokenTypeTRX,
+
+	// BNB
+	OrderTradeTypeBnbBep20: TokenTypeBNB,
 }
 
 type WalletAddress struct {

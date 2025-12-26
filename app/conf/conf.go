@@ -13,6 +13,8 @@ type Conf struct {
 	Pay          struct {
 		TrxAtom          float64  `toml:"trx_atom"`
 		TrxRate          string   `toml:"trx_rate"`
+		BnbAtom          float64  `toml:"bnb_atom"`
+		BnbRate          string   `toml:"bnb_rate"`
 		UsdtAtom         float64  `toml:"usdt_atom"`
 		UsdcAtom         float64  `toml:"usdc_atom"`
 		UsdtRate         string   `toml:"usdt_rate"`

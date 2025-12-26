@@ -4,14 +4,16 @@ const (
 	defaultExpireTime       = 600      // 订单默认有效期 10分钟
 	DefaultUsdtCnyRate      = 6.4      // 默认USDT基准汇率
 	DefaultUsdcCnyRate      = 6.4      // 默认USDC基准汇率
+	DefaultBnbCnyRate       = 5900.11  // 默认BNB基准汇率
 	DefaultTrxCnyRate       = 0.95     // 默认TRX基准汇率
 	defaultAuthToken        = "123234" // 默认授权码
 	defaultListen           = ":8080"  // 默认监听地址
 	defaultPaymentMinAmount = 0.01
 	defaultPaymentMaxAmount = 99999
-	defaultUsdtAtomicity    = 0.01 // USDT原子精度
-	defaultUsdcAtomicity    = 0.01 // USDC原子精度
-	defaultTrxAtomicity     = 0.01 // TRX原子精度
+	defaultUsdtAtomicity    = 0.01    // USDT原子精度
+	defaultUsdcAtomicity    = 0.01    // USDC原子精度
+	defaultBnbAtomicity     = 0.00001 // BNB原子精度
+	defaultTrxAtomicity     = 0.01    // TRX原子精度
 
 	// RPC节点均采集自公共网络，作者不对任何节点稳定性和可用性做任何保证，须知！
 	defaultTronGrpcNode        = "18.141.79.38:50051"                             // 默认GRPC节点
@@ -47,6 +49,7 @@ const (
 	UsdcBase     = "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
 	UsdcSolana   = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
 	UsdcAptos    = "0xbae207659db88bea0cbead6da0ed00aac12edcdda169e591cd41c94180b46f3b"
+	BnbBep20     = "0x0000000000000000000000000000000000000000"                         // BSC BNB native token (zero address)
 )
 
 const (
@@ -69,6 +72,8 @@ const (
 	UsdcTronDecimals     = -6  // USDC Tron小数位数
 	UsdcAptosDecimals    = -6  // USDC Aptos小数位数
 	UsdcSolanaDecimals   = -6  // USDC Solana小数位数
+
+	BnbBep20Decimals     = -18 // BNB 小数位数
 )
 
 const (

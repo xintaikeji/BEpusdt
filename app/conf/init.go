@@ -69,6 +69,11 @@ func GetTrxRate() string {
 	return cfg.Pay.TrxRate
 }
 
+func GetBnbRate() string {
+
+	return cfg.Pay.BnbRate
+}
+
 func GetUsdtAtomicity() (decimal.Decimal, int) {
 	var val = defaultUsdtAtomicity
 	if cfg.Pay.UsdtAtom != 0 {
@@ -98,6 +103,18 @@ func GetTrxAtomicity() (decimal.Decimal, int) {
 	if cfg.Pay.TrxAtom != 0 {
 
 		val = cfg.Pay.TrxAtom
+	}
+
+	var atom = decimal.NewFromFloat(val)
+
+	return atom, cast.ToInt(math.Abs(float64(atom.Exponent())))
+}
+
+func GetBnbAtomicity() (decimal.Decimal, int) {
+	var val = defaultBnbAtomicity
+	if cfg.Pay.BnbAtom != 0 {
+
+		val = cfg.Pay.BnbAtom
 	}
 
 	var atom = decimal.NewFromFloat(val)

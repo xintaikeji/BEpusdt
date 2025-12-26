@@ -8,7 +8,7 @@
 |     Tron     |  `usdt.trc20`   |  `usdc.trc20`   | `tron.trx` |
 |   Ethereum   |  `usdt.erc20`   |  `usdc.erc20`   |            |
 |   Polygon    | `usdt.polygon`  | `usdc.polygon`  |            |
-|     BSC      |  `usdt.bep20`   |  `usdc.bep20`   |            |
+|     BSC      |  `usdt.bep20`   |  `usdc.bep20`   | `bnb.bep20` |
 |    Aptos     |  `usdt.aptos`   |  `usdc.aptos`   |            |
 |    Solana    |  `usdt.solana`  |  `usdc.solana`  |            |
 |   X-Layer    |  `usdt.xlayer`  |  `usdc.xlayer`  |            |
