@@ -223,6 +223,8 @@ func (wa *WalletAddress) GetTokenDecimals() int32 {
 		return conf.UsdcSolanaDecimals
 	case OrderTradeTypeUsdcAptos:
 		return conf.UsdcAptosDecimals
+	case OrderTradeTypeBnbBep20:
+		return conf.BnbBep20Decimals
 	default:
 		return -6
 	}
@@ -254,6 +256,8 @@ func (wa *WalletAddress) GetEvmRpcEndpoint() string {
 		return conf.GetArbitrumRpcEndpoint()
 	case OrderTradeTypeUsdcBase:
 		return conf.GetBaseRpcEndpoint()
+	case OrderTradeTypeBnbBep20:
+		return conf.GetBscRpcEndpoint()
 	default:
 		return ""
 	}
