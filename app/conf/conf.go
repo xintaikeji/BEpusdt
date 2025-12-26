@@ -11,19 +11,21 @@ type Conf struct {
 	AptosRpcNode string `toml:"aptos_rpc_node"`
 	WebhookUrl   string `toml:"webhook_url"`
 	Pay          struct {
-		TrxAtom          float64  `toml:"trx_atom"`
-		TrxRate          string   `toml:"trx_rate"`
-		BnbAtom          float64  `toml:"bnb_atom"`
-		BnbRate          string   `toml:"bnb_rate"`
-		UsdtAtom         float64  `toml:"usdt_atom"`
-		UsdcAtom         float64  `toml:"usdc_atom"`
-		UsdtRate         string   `toml:"usdt_rate"`
-		UsdcRate         string   `toml:"usdc_rate"`
-		ExpireTime       int      `toml:"expire_time"`
-		WalletAddress    []string `toml:"wallet_address"`
-		TradeIsConfirmed bool     `toml:"trade_is_confirmed"`
-		PaymentAmountMin float64  `toml:"payment_amount_min"`
-		PaymentAmountMax float64  `toml:"payment_amount_max"`
+		TrxAtom             float64  `toml:"trx_atom"`
+		TrxRate             string   `toml:"trx_rate"`
+		BnbAtom             float64  `toml:"bnb_atom"`
+		BnbRate             string   `toml:"bnb_rate"`
+		UsdtAtom            float64  `toml:"usdt_atom"`
+		UsdcAtom            float64  `toml:"usdc_atom"`
+		UsdtRate            string   `toml:"usdt_rate"`
+		UsdcRate            string   `toml:"usdc_rate"`
+		ExpireTime          int      `toml:"expire_time"`
+		WalletAddress       []string `toml:"wallet_address"`
+		TradeIsConfirmed    bool     `toml:"trade_is_confirmed"`
+		PaymentAmountMin    float64  `toml:"payment_amount_min"`
+		PaymentAmountMax    float64  `toml:"payment_amount_max"`
+		PaymentAmountBnbMin float64  `toml:"payment_amount_bnb_min"`
+		PaymentAmountBnbMax float64  `toml:"payment_amount_bnb_max"`
 	} `toml:"pay"`
 	EvmRpc struct {
 		Bsc      string `toml:"bsc"`

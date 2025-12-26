@@ -240,6 +240,25 @@ func GetPaymentAmountMax() decimal.Decimal {
 	return decimal.NewFromFloat(val)
 }
 
+// BNB 限额读取
+func GetPaymentAmountBnbMin() decimal.Decimal {
+	var val = defaultPaymentBnbMinAmount
+	if cfg.Pay.PaymentAmountBnbMin != 0 {
+		val = cfg.Pay.PaymentAmountBnbMin
+	}
+
+	return decimal.NewFromFloat(val)
+}
+
+func GetPaymentAmountBnbMax() decimal.Decimal {
+	var val float64 = defaultPaymentBnbMaxAmount
+	if cfg.Pay.PaymentAmountBnbMax != 0 {
+		val = cfg.Pay.PaymentAmountBnbMax
+	}
+
+	return decimal.NewFromFloat(val)
+}
+
 func GetWebhookUrl() string {
 
 	return cfg.WebhookUrl

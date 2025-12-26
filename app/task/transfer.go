@@ -65,8 +65,8 @@ func orderTransferHandle(context.Context) {
 		var orders = getAllWaitingOrders()
 		for _, t := range transfers {
 			// debug
-			//if t.TradeType == model.OrderTradeTypeUsdcBep20 {
-			//	fmt.Println(t.TradeType, t.TxHash, t.FromAddress, "=>", t.RecvAddress, t.Amount.String())
+			//if t.TradeType == model.OrderTradeTypeBnbBep20 {
+			//	log.Info("transfer:", t.TradeType, t.TxHash, t.FromAddress, t.RecvAddress, t.Amount.String())
 			//}
 
 			// 对 EVM 链的地址进行小写标准化，确保与订单中的地址一致
@@ -78,8 +78,10 @@ func orderTransferHandle(context.Context) {
 			}
 
 			// 判断金额是否在允许范围内
-			if !inAmountRange(t.Amount) {
-
+			if !inAmountRange(t.Amount, t.TradeType) {
+				//if t.TradeType == model.OrderTradeTypeBnbBep20 {
+				//	log.Warn(fmt.Sprintf("BNB 交易金额低于配置的最小值: %s", t.Amount.String()))
+				//}
 				continue
 			}
 
@@ -120,7 +122,7 @@ func notOrderTransferHandle(context.Context) {
 					continue
 				}
 
-				if !inAmountRange(t.Amount) {
+				if !inAmountRange(t.Amount, t.TradeType) {
 
 					continue
 				}
