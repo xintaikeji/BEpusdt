@@ -24,6 +24,7 @@ const (
 	OrderStatusFailed     = 6 // 交易确认失败
 
 	OrderTradeTypeTronTrx      = "tron.trx"
+	OrderTradeTypeEthErc20     = "eth.erc20"
 	OrderTradeTypeBnbBep20     = "bnb.bep20"
 	OrderTradeTypeUsdtTrc20    = "usdt.trc20"
 	OrderTradeTypeUsdcTrc20    = "usdc.trc20"
@@ -160,7 +161,7 @@ func (o *TradeOrders) GetDetailUrl() string {
 }
 
 func GetDetailUrl(tradeType, hash string) string {
-	if help.InStrings(tradeType, []string{OrderTradeTypeUsdtErc20, OrderTradeTypeUsdcErc20}) {
+	if help.InStrings(tradeType, []string{OrderTradeTypeUsdtErc20, OrderTradeTypeUsdcErc20, OrderTradeTypeEthErc20}) {
 		return "https://etherscan.io/tx/" + hash
 	}
 	if help.InStrings(tradeType, []string{OrderTradeTypeUsdtBep20, OrderTradeTypeUsdcBep20, OrderTradeTypeBnbBep20}) {
@@ -265,6 +266,8 @@ func GetTradeRate(token TokenType, param string) (float64, error) {
 			return rate.ParseFloatRate(param, rate.GetOkxUsdcRawRate()), nil
 		case TokenTypeTRX:
 			return rate.ParseFloatRate(param, rate.GetOkxTrxRawRate()), nil
+		case TokenTypeETH:
+			return rate.ParseFloatRate(param, rate.GetOkxEthRawRate()), nil
 		case TokenTypeBNB:
 			return rate.ParseFloatRate(param, rate.GetOkxBnbRawRate()), nil
 		}
@@ -279,6 +282,8 @@ func GetTradeRate(token TokenType, param string) (float64, error) {
 		return rate.GetUsdcCalcRate(), nil
 	case TokenTypeTRX:
 		return rate.GetTrxCalcRate(), nil
+	case TokenTypeETH:
+		return rate.GetEthCalcRate(), nil
 	case TokenTypeBNB:
 		return rate.GetBnbCalcRate(), nil
 	}
@@ -290,6 +295,8 @@ func getTokenAtomicityByTradeType(tradeType string) (decimal.Decimal, int) {
 	switch tradeType {
 	case OrderTradeTypeTronTrx:
 		return conf.GetTrxAtomicity()
+	case OrderTradeTypeEthErc20:
+		return conf.GetEthAtomicity()
 	case OrderTradeTypeBnbBep20:
 		return conf.GetBnbAtomicity()
 	case OrderTradeTypeUsdtTrc20:

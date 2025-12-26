@@ -19,10 +19,12 @@ webhook_url = ""
 # usdt 支付原子颗粒度，0.01表示支付数额保留两位小数，相同金额时递增颗粒度为0.01，依次类推，如无特殊需求不建议修改。
 usdt_atom = 0.01
 usdc_atom = 0.01
+eth_atom = 0.000001
 bnb_atom = 0.00001
-# USDT/USDC/BNB汇率，默认留空则获取Okx交易所的汇率(分钟/次，失败则取6.4)；支持多种写法，如：7.4表示固定7.4、～1.02表示最新汇率上浮2%、～0.97表示最新汇率下浮3%、+0.3表示最新加0.3、-0.2表示最新减0.2
+# USDT/USDC/ETH/BNB汇率，默认留空则获取Okx交易所的汇率(分钟/次，失败则取6.4)；支持多种写法，如：7.4表示固定7.4、～1.02表示最新汇率上浮2%、～0.97表示最新汇率下浮3%、+0.3表示最新加0.3、-0.2表示最新减0.2
 usdt_rate = "~0.98"
 usdc_rate = "~0.98"
+eth_rate = "~0.999"
 bnb_rate = "~0.98"
 # 同上，TRX支付原子颗粒度
 trx_atom = 0.01
@@ -42,6 +44,8 @@ trade_is_confirmed = false
 # 支付监控的允许数额范围(闭区间)，设置合理数值可避免一些诱导式诈骗交易提醒
 payment_amount_min = 0.01
 payment_amount_max = 99999
+payment_amount_eth_min = 0.000001
+payment_amount_eth_max = 99999
 payment_amount_bnb_min = 0.00001
 payment_amount_bnb_max = 99999
 

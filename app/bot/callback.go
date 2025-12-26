@@ -555,8 +555,9 @@ func aptTokenBalanceOf(wa model.WalletAddress) string {
 
 func evmTokenBalanceOf(wa model.WalletAddress) string {
 	var jsonData []byte
-	// 如果是 BNB，使用 eth_getBalance 查询原生币余额
-	if wa.TradeType == model.OrderTradeTypeBnbBep20 {
+	// 如果是原生代币，使用 eth_getBalance 查询原生币余额
+	if wa.TradeType == model.OrderTradeTypeBnbBep20 ||
+		wa.TradeType == model.OrderTradeTypeEthErc20 {
 		jsonData = []byte(fmt.Sprintf(`{"jsonrpc":"2.0","id":%d,"method":"eth_getBalance","params":["%s","latest"]}`,
 			time.Now().Unix(), wa.Address))
 	} else {

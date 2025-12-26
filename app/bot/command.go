@@ -108,6 +108,7 @@ func cmdStateHandle(ctx context.Context, b *bot.Bot, u *models.Update) {
 	// 动态显示启用类型的收款汇总
 	typeDisplayNames := map[string]string{
 		model.OrderTradeTypeTronTrx:      "TRX",
+		model.OrderTradeTypeEthErc20:     "ETH",
 		model.OrderTradeTypeBnbBep20:     "BNB",
 		model.OrderTradeTypeUsdtTrc20:    "USDT.Trc20",
 		model.OrderTradeTypeUsdtErc20:    "USDT.Erc20",
@@ -196,12 +197,18 @@ func cmdStateHandle(ctx context.Context, b *bot.Bot, u *models.Update) {
 
 	text += "-----------------------\n"
 	text += fmt.Sprintf("🪧基准汇率(TRX)：%v\n", cast.ToString(rate.GetOkxTrxRawRate()))
+	if help.InStrings(model.OrderTradeTypeEthErc20, types) {
+		text += fmt.Sprintf("🪧基准汇率(ETH)：%v\n", cast.ToString(rate.GetOkxEthRawRate()))
+	}
 	if help.InStrings(model.OrderTradeTypeBnbBep20, types) {
 		text += fmt.Sprintf("🪧基准汇率(BNB)：%v\n", cast.ToString(rate.GetOkxBnbRawRate()))
 	}
 	text += fmt.Sprintf("🪧基准汇率(USDT)：%v\n", cast.ToString(rate.GetOkxUsdtRawRate()))
 	text += fmt.Sprintf("🪧基准汇率(USDC)：%v\n", cast.ToString(rate.GetOkxUsdcRawRate()))
 	text += fmt.Sprintf("✅订单汇率(TRX)：%v\n", cast.ToString(rate.GetTrxCalcRate()))
+	if help.InStrings(model.OrderTradeTypeEthErc20, types) {
+		text += fmt.Sprintf("✅订单汇率(ETH)：%v\n", cast.ToString(rate.GetEthCalcRate()))
+	}
 	if help.InStrings(model.OrderTradeTypeBnbBep20, types) {
 		text += fmt.Sprintf("✅订单汇率(BNB)：%v\n", cast.ToString(rate.GetBnbCalcRate()))
 	}

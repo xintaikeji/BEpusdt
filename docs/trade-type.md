@@ -6,7 +6,7 @@
 |    **网络**    |    **USDT**     |    **USDC**     |   **其它**   |
 |:------------:|:---------------:|:---------------:|:----------:|
 |     Tron     |  `usdt.trc20`   |  `usdc.trc20`   | `tron.trx` |
-|   Ethereum   |  `usdt.erc20`   |  `usdc.erc20`   |            |
+|   Ethereum   |  `usdt.erc20`   |  `usdc.erc20`   | `eth.erc20` |
 |   Polygon    | `usdt.polygon`  | `usdc.polygon`  |            |
 |     BSC      |  `usdt.bep20`   |  `usdc.bep20`   | `bnb.bep20` |
 |    Aptos     |  `usdt.aptos`   |  `usdc.aptos`   |            |

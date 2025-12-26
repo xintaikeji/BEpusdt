@@ -70,7 +70,8 @@ func orderTransferHandle(context.Context) {
 			//}
 
 			// 对 EVM 链的地址进行小写标准化，确保与订单中的地址一致
-			if t.TradeType == model.OrderTradeTypeBnbBep20 ||
+			if t.TradeType == model.OrderTradeTypeEthErc20 ||
+				t.TradeType == model.OrderTradeTypeBnbBep20 ||
 				t.TradeType == model.OrderTradeTypeUsdtPolygon ||
 				t.TradeType == model.OrderTradeTypeUsdtBep20 ||
 				t.TradeType == model.OrderTradeTypeUsdcBep20 {
@@ -237,6 +238,7 @@ func getAllWaitingOrders() map[string]model.TradeOrders {
 
 		// 对需要小写处理的地址进行标准化
 		if order.TradeType == model.OrderTradeTypeUsdtPolygon ||
+			order.TradeType == model.OrderTradeTypeEthErc20 ||
 			order.TradeType == model.OrderTradeTypeBnbBep20 {
 			order.Address = strings.ToLower(order.Address)
 		}

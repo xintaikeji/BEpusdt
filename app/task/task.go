@@ -48,10 +48,14 @@ func register(t task) {
 func inAmountRange(payAmount decimal.Decimal, tradeType string) bool {
 	var min, max decimal.Decimal
 	
-	if tradeType == model.OrderTradeTypeBnbBep20 {
+	switch tradeType {
+	case model.OrderTradeTypeEthErc20:
+		min = conf.GetPaymentAmountEthMin()
+		max = conf.GetPaymentAmountEthMax()
+	case model.OrderTradeTypeBnbBep20:
 		min = conf.GetPaymentAmountBnbMin()
 		max = conf.GetPaymentAmountBnbMax()
-	} else {
+	default:
 		min = conf.GetPaymentAmountMin()
 		max = conf.GetPaymentAmountMax()
 	}

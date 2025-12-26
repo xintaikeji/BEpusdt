@@ -4,16 +4,20 @@ const (
 	defaultExpireTime          = 600      // 订单默认有效期 10分钟
 	DefaultUsdtCnyRate         = 6.4      // 默认USDT基准汇率
 	DefaultUsdcCnyRate         = 6.4      // 默认USDC基准汇率
+	DefaultEthCnyRate          = 20480.72 // 默认ETH基准汇率
 	DefaultBnbCnyRate          = 5900.11  // 默认BNB基准汇率
 	DefaultTrxCnyRate          = 0.95     // 默认TRX基准汇率
 	defaultAuthToken           = "123234" // 默认授权码
 	defaultListen              = ":8080"  // 默认监听地址
 	defaultPaymentMinAmount    = 0.01
 	defaultPaymentMaxAmount    = 99999
+	defaultPaymentEthMinAmount = 0.000001 // ETH默认最小支付额
+	defaultPaymentEthMaxAmount = 99999    // ETH默认最大支付额
 	defaultPaymentBnbMinAmount = 0.00001  // BNB默认最小支付额
 	defaultPaymentBnbMaxAmount = 99999    // BNB默认最大支付额
 	defaultUsdtAtomicity       = 0.01     // USDT原子精度
 	defaultUsdcAtomicity       = 0.01     // USDC原子精度
+	defaultEthAtomicity        = 0.000001 // ETH原子精度
 	defaultBnbAtomicity        = 0.00001  // BNB原子精度
 	defaultTrxAtomicity        = 0.01     // TRX原子精度
 
@@ -51,6 +55,7 @@ const (
 	UsdcBase     = "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
 	UsdcSolana   = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
 	UsdcAptos    = "0xbae207659db88bea0cbead6da0ed00aac12edcdda169e591cd41c94180b46f3b"
+	EthErc20     = "0x0000000000000000000000000000000000000000"                         // ETH native token (zero address)
 	BnbBep20     = "0x0000000000000000000000000000000000000000"                         // BSC BNB native token (zero address)
 )
 
@@ -75,6 +80,7 @@ const (
 	UsdcAptosDecimals    = -6  // USDC Aptos小数位数
 	UsdcSolanaDecimals   = -6  // USDC Solana小数位数
 
+	EthErc20Decimals     = -18 // ETH 小数位数
 	BnbBep20Decimals     = -18 // BNB 小数位数
 )
 

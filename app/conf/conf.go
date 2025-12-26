@@ -13,6 +13,8 @@ type Conf struct {
 	Pay          struct {
 		TrxAtom             float64  `toml:"trx_atom"`
 		TrxRate             string   `toml:"trx_rate"`
+		EthAtom             float64  `toml:"eth_atom"`
+		EthRate             string   `toml:"eth_rate"`
 		BnbAtom             float64  `toml:"bnb_atom"`
 		BnbRate             string   `toml:"bnb_rate"`
 		UsdtAtom            float64  `toml:"usdt_atom"`
@@ -24,6 +26,8 @@ type Conf struct {
 		TradeIsConfirmed    bool     `toml:"trade_is_confirmed"`
 		PaymentAmountMin    float64  `toml:"payment_amount_min"`
 		PaymentAmountMax    float64  `toml:"payment_amount_max"`
+		PaymentAmountEthMin float64  `toml:"payment_amount_eth_min"`
+		PaymentAmountEthMax float64  `toml:"payment_amount_eth_max"`
 		PaymentAmountBnbMin float64  `toml:"payment_amount_bnb_min"`
 		PaymentAmountBnbMax float64  `toml:"payment_amount_bnb_max"`
 	} `toml:"pay"`

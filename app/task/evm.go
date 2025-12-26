@@ -49,7 +49,7 @@ var networkTokenMap = map[string][]string{
 	conf.Polygon:  {model.OrderTradeTypeUsdtPolygon, model.OrderTradeTypeUsdcPolygon},
 	conf.Arbitrum: {model.OrderTradeTypeUsdtArbitrum, model.OrderTradeTypeUsdcArbitrum},
 	conf.Plasma:   {model.OrderTradeTypeUsdtPlasma},
-	conf.Ethereum: {model.OrderTradeTypeUsdtErc20, model.OrderTradeTypeUsdcErc20},
+	conf.Ethereum: {model.OrderTradeTypeUsdtErc20, model.OrderTradeTypeUsdcErc20, model.OrderTradeTypeEthErc20},
 	conf.Base:     {model.OrderTradeTypeUsdcBase},
 	conf.Solana:   {model.OrderTradeTypeUsdtSolana, model.OrderTradeTypeUsdcSolana},
 	conf.Aptos:    {model.OrderTradeTypeUsdtAptos, model.OrderTradeTypeUsdcAptos},
@@ -70,7 +70,7 @@ var decimals = map[string]int32{
 	conf.UsdcBase:     conf.UsdcBaseDecimals,
 	conf.UsdcAptos:    conf.UsdcAptosDecimals,
 	conf.UsdtAptos:    conf.UsdtAptosDecimals,
-	conf.BnbBep20:     conf.BnbBep20Decimals,
+	conf.EthErc20:     conf.EthErc20Decimals,
 }
 
 type block struct {
@@ -216,12 +216,22 @@ func (e *evm) getBlockByNumber(a any) {
 		return
 	}
 
-	// 检查当前网络是否需要扫描原生代币（如 BNB）
+	// 检查当前网络是否需要扫描原生代币（如 BNB, ETH）
 	var hasNative bool
+	var nativeTradeType string
+	var nativeDecimals int32
 	if tokens, ok := networkTokenMap[e.Network]; ok {
 		for _, t := range tokens {
+			if t == model.OrderTradeTypeEthErc20 {
+				hasNative = true
+				nativeTradeType = t
+				nativeDecimals = conf.EthErc20Decimals
+				break
+			}
 			if t == model.OrderTradeTypeBnbBep20 {
 				hasNative = true
+				nativeTradeType = t
+				nativeDecimals = conf.BnbBep20Decimals
 				break
 			}
 		}
@@ -281,7 +291,7 @@ func (e *evm) getBlockByNumber(a any) {
 		blockTime := time.Unix(help.HexStr2Int(itm.Get("result.timestamp").String()).Int64(), 0)
 		timestamp[blockNumHex] = blockTime
 
-		// 如果是 BEP20 网络，解析原生 BNB 代币转账
+		// 解析原生代币转账
 		if hasNative {
 			for _, tx := range itm.Get("result.transactions").Array() {
 				valStr := tx.Get("value").String()
@@ -304,11 +314,11 @@ func (e *evm) getBlockByNumber(a any) {
 					Network:     e.Network,
 					FromAddress: tx.Get("from").String(),
 					RecvAddress: toAddress,
-					Amount:      decimal.NewFromBigInt(amount, conf.BnbBep20Decimals), // 使用 BNB 精度
+					Amount:      decimal.NewFromBigInt(amount, nativeDecimals),
 					TxHash:      tx.Get("hash").String(),
 					BlockNum:    help.HexStr2Int(blockNumHex).Int64(),
 					Timestamp:   blockTime,
-					TradeType:   model.OrderTradeTypeBnbBep20,
+					TradeType:   nativeTradeType,
 				})
 			}
 		}
