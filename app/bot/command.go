@@ -196,11 +196,15 @@ func cmdStateHandle(ctx context.Context, b *bot.Bot, u *models.Update) {
 
 	text += "-----------------------\n"
 	text += fmt.Sprintf("🪧基准汇率(TRX)：%v\n", cast.ToString(rate.GetOkxTrxRawRate()))
-	text += fmt.Sprintf("🪧基准汇率(BNB)：%v\n", cast.ToString(rate.GetOkxBnbRawRate()))
+	if help.InStrings(model.OrderTradeTypeBnbBep20, types) {
+		text += fmt.Sprintf("🪧基准汇率(BNB)：%v\n", cast.ToString(rate.GetOkxBnbRawRate()))
+	}
 	text += fmt.Sprintf("🪧基准汇率(USDT)：%v\n", cast.ToString(rate.GetOkxUsdtRawRate()))
 	text += fmt.Sprintf("🪧基准汇率(USDC)：%v\n", cast.ToString(rate.GetOkxUsdcRawRate()))
 	text += fmt.Sprintf("✅订单汇率(TRX)：%v\n", cast.ToString(rate.GetTrxCalcRate()))
-	text += fmt.Sprintf("✅订单汇率(BNB)：%v\n", cast.ToString(rate.GetBnbCalcRate()))
+	if help.InStrings(model.OrderTradeTypeBnbBep20, types) {
+		text += fmt.Sprintf("✅订单汇率(BNB)：%v\n", cast.ToString(rate.GetBnbCalcRate()))
+	}
 	text += fmt.Sprintf("✅订单汇率(USDT)：%v\n", cast.ToString(rate.GetUsdtCalcRate()))
 	text += fmt.Sprintf("✅订单汇率(USDC)：%v\n", cast.ToString(rate.GetUsdcCalcRate()))
 	text += "-----------------------\n"

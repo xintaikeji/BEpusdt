@@ -14,6 +14,7 @@ import (
 	"github.com/tidwall/gjson"
 	"github.com/v03413/bepusdt/app/conf"
 	"github.com/v03413/bepusdt/app/log"
+	"github.com/v03413/bepusdt/app/model"
 	"github.com/v03413/bepusdt/app/task/rate"
 )
 
@@ -50,6 +51,21 @@ func OkxUsdcRateStart(ctx context.Context) {
 
 // OkxBnbRateStart Okx BNB_CNY 汇率监控
 func OkxBnbRateStart(ctx context.Context) {
+	// 未配置 BNB 支付方式，不查询汇率
+	var addresses = model.GetAvailableAddress("", model.OrderTradeTypeBnbBep20)
+	var enable = false
+	// Status == model.StatusEnable
+	for _, v := range addresses {
+		if v.Status == model.StatusEnable {
+			enable = true
+			break
+		}
+	}
+
+	// Disable or Null
+	if !enable {
+		return
+	}
 	var rawRate, err = getOkxTokenCnySellPrice(ctx, "BNB")
 	if err != nil {
 		log.Error("Okx BNB_CNY 汇率获取失败", err)
