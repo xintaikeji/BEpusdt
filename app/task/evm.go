@@ -44,12 +44,12 @@ var contractMap = map[string]string{
 	conf.UsdcBase:     model.OrderTradeTypeUsdcBase,
 }
 var networkTokenMap = map[string][]string{
-	conf.Bsc:      {model.OrderTradeTypeUsdtBep20, model.OrderTradeTypeUsdcBep20},
+	conf.Bsc:      {model.OrderTradeTypeUsdtBep20, model.OrderTradeTypeUsdcBep20, model.OrderTradeTypeBnbBep20},
 	conf.Xlayer:   {model.OrderTradeTypeUsdtXlayer, model.OrderTradeTypeUsdcXlayer},
 	conf.Polygon:  {model.OrderTradeTypeUsdtPolygon, model.OrderTradeTypeUsdcPolygon},
 	conf.Arbitrum: {model.OrderTradeTypeUsdtArbitrum, model.OrderTradeTypeUsdcArbitrum},
 	conf.Plasma:   {model.OrderTradeTypeUsdtPlasma},
-	conf.Ethereum: {model.OrderTradeTypeUsdtErc20, model.OrderTradeTypeUsdcErc20},
+	conf.Ethereum: {model.OrderTradeTypeUsdtErc20, model.OrderTradeTypeUsdcErc20, model.OrderTradeTypeEthErc20},
 	conf.Base:     {model.OrderTradeTypeUsdcBase},
 	conf.Solana:   {model.OrderTradeTypeUsdtSolana, model.OrderTradeTypeUsdcSolana},
 	conf.Aptos:    {model.OrderTradeTypeUsdtAptos, model.OrderTradeTypeUsdcAptos},
@@ -70,6 +70,7 @@ var decimals = map[string]int32{
 	conf.UsdcBase:     conf.UsdcBaseDecimals,
 	conf.UsdcAptos:    conf.UsdcAptosDecimals,
 	conf.UsdtAptos:    conf.UsdtAptosDecimals,
+	conf.EthErc20:     conf.EthErc20Decimals,
 }
 
 type block struct {
@@ -215,9 +216,31 @@ func (e *evm) getBlockByNumber(a any) {
 		return
 	}
 
+	// 检查当前网络是否需要扫描原生代币（如 BNB, ETH）
+	var hasNative bool
+	var nativeTradeType string
+	var nativeDecimals int32
+	if tokens, ok := networkTokenMap[e.Network]; ok {
+		for _, t := range tokens {
+			if t == model.OrderTradeTypeEthErc20 {
+				hasNative = true
+				nativeTradeType = t
+				nativeDecimals = conf.EthErc20Decimals
+				break
+			}
+			if t == model.OrderTradeTypeBnbBep20 {
+				hasNative = true
+				nativeTradeType = t
+				nativeDecimals = conf.BnbBep20Decimals
+				break
+			}
+		}
+	}
+
 	items := make([]string, 0)
 	for i := b.From; i <= b.To; i++ {
-		items = append(items, fmt.Sprintf(`{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["0x%x",false],"id":%d}`, i, i))
+		// 如果支持原生代币，设置第二个参数为 true 以获取完整交易详情
+		items = append(items, fmt.Sprintf(`{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["0x%x",%t],"id":%d}`, i, hasNative, i))
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
@@ -252,6 +275,9 @@ func (e *evm) getBlockByNumber(a any) {
 	}
 
 	timestamp := make(map[string]time.Time)
+	nativeTransfers := make([]transfer, 0)
+
+	// 解析区块数据
 	for _, itm := range gjson.ParseBytes(body).Array() {
 		if itm.Get("error").Exists() {
 			conf.SetBlockFail(e.Network)
@@ -261,9 +287,44 @@ func (e *evm) getBlockByNumber(a any) {
 			return
 		}
 
-		timestamp[itm.Get("result.number").String()] = time.Unix(help.HexStr2Int(itm.Get("result.timestamp").String()).Int64(), 0)
+		blockNumHex := itm.Get("result.number").String()
+		blockTime := time.Unix(help.HexStr2Int(itm.Get("result.timestamp").String()).Int64(), 0)
+		timestamp[blockNumHex] = blockTime
+
+		// 解析原生代币转账
+		if hasNative {
+			for _, tx := range itm.Get("result.transactions").Array() {
+				valStr := tx.Get("value").String()
+				// 过滤 0 值交易
+				if valStr == "0x0" || len(valStr) < 3 {
+					continue
+				}
+
+				amount, ok := big.NewInt(0).SetString(valStr[2:], 16)
+				if !ok || amount.Sign() <= 0 {
+					continue
+				}
+
+				toAddress := tx.Get("to").String()
+				if toAddress == "" { // 合约创建交易 to 为空
+					continue
+				}
+
+				nativeTransfers = append(nativeTransfers, transfer{
+					Network:     e.Network,
+					FromAddress: tx.Get("from").String(),
+					RecvAddress: toAddress,
+					Amount:      decimal.NewFromBigInt(amount, nativeDecimals),
+					TxHash:      tx.Get("hash").String(),
+					BlockNum:    help.HexStr2Int(blockNumHex).Int64(),
+					Timestamp:   blockTime,
+					TradeType:   nativeTradeType,
+				})
+			}
+		}
 	}
 
+	// 解析代币日志事件 (ERC20/BEP20)
 	transfers, err := e.parseBlockTransfer(b, timestamp)
 	if err != nil {
 		conf.SetBlockFail(e.Network)
@@ -273,8 +334,12 @@ func (e *evm) getBlockByNumber(a any) {
 		return
 	}
 
-	if len(transfers) >= 0 {
+	// 合并原生代币转账
+	if len(nativeTransfers) > 0 {
+		transfers = append(transfers, nativeTransfers...)
+	}
 
+	if len(transfers) > 0 {
 		transferQueue.In <- transfers
 	}
 

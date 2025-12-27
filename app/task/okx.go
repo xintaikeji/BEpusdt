@@ -14,18 +14,21 @@ import (
 	"github.com/tidwall/gjson"
 	"github.com/v03413/bepusdt/app/conf"
 	"github.com/v03413/bepusdt/app/log"
+	"github.com/v03413/bepusdt/app/model"
 	"github.com/v03413/bepusdt/app/task/rate"
 )
 
 func init() {
 	register(task{duration: time.Minute, callback: OkxUsdtRateStart})
 	register(task{duration: time.Minute, callback: OkxUsdcRateStart})
+	register(task{duration: time.Minute, callback: OkxEthRateStart})
+	register(task{duration: time.Minute, callback: OkxBnbRateStart})
 	register(task{duration: time.Minute, callback: OkxTrxRateStart})
 }
 
 // OkxUsdtRateStart Okx USDT_CNY 汇率监控
 func OkxUsdtRateStart(ctx context.Context) {
-	var rawRate, err = getOkxUsdTokenCnySellPrice(ctx, "USDT")
+	var rawRate, err = getOkxTokenCnySellPrice(ctx, "USDT")
 	if err != nil {
 		log.Error("Okx USDT_CNY 汇率获取失败", err)
 	} else {
@@ -37,7 +40,7 @@ func OkxUsdtRateStart(ctx context.Context) {
 
 // OkxUsdcRateStart Okx USDC_CNY 汇率监控
 func OkxUsdcRateStart(ctx context.Context) {
-	var rawRate, err = getOkxUsdTokenCnySellPrice(ctx, "USDC")
+	var rawRate, err = getOkxTokenCnySellPrice(ctx, "USDC")
 	if err != nil {
 		log.Error("Okx USDC_CNY 汇率获取失败", err)
 	} else {
@@ -45,6 +48,60 @@ func OkxUsdcRateStart(ctx context.Context) {
 	}
 
 	log.Info("当前 USDC_CNY 计算汇率：", rate.GetUsdcCalcRate())
+}
+
+// OkxEthRateStart Okx ETH_CNY 汇率监控
+func OkxEthRateStart(ctx context.Context) {
+	// 未配置 ETH 支付方式，不查询汇率
+	var addresses = model.GetAvailableAddress("", model.OrderTradeTypeEthErc20)
+	var enable = false
+	// Status == model.StatusEnable
+	for _, v := range addresses {
+		if v.Status == model.StatusEnable {
+			enable = true
+			break
+		}
+	}
+
+	// Disable or Null
+	if !enable {
+		return
+	}
+	var rawRate, err = getOkxTokenCnySellPrice(ctx, "ETH")
+	if err != nil {
+		log.Error("Okx ETH_CNY 汇率获取失败", err)
+	} else {
+		rate.SetOkxEthCnyRate(conf.GetEthRate(), rawRate)
+	}
+
+	log.Info("当前 ETH_CNY 计算汇率：", rate.GetEthCalcRate())
+}
+
+// OkxBnbRateStart Okx BNB_CNY 汇率监控
+func OkxBnbRateStart(ctx context.Context) {
+	// 未配置 BNB 支付方式，不查询汇率
+	var addresses = model.GetAvailableAddress("", model.OrderTradeTypeBnbBep20)
+	var enable = false
+	// Status == model.StatusEnable
+	for _, v := range addresses {
+		if v.Status == model.StatusEnable {
+			enable = true
+			break
+		}
+	}
+
+	// Disable or Null
+	if !enable {
+		return
+	}
+	var rawRate, err = getOkxTokenCnySellPrice(ctx, "BNB")
+	if err != nil {
+		log.Error("Okx BNB_CNY 汇率获取失败", err)
+	} else {
+		rate.SetOkxBnbCnyRate(conf.GetBnbRate(), rawRate)
+	}
+
+	log.Info("当前 BNB_CNY 计算汇率：", rate.GetBnbCalcRate())
 }
 
 // OkxTrxRateStart  Okx TRX_CNY 汇率监控
@@ -59,9 +116,9 @@ func OkxTrxRateStart(ctx context.Context) {
 	log.Info("当前 TRX_CNY 计算汇率：", rate.GetTrxCalcRate())
 }
 
-// getOkxUsdtCnySellPrice  Okx  C2C快捷交易 USDT出售 实时汇率
-func getOkxUsdTokenCnySellPrice(ctx context.Context, crypto string) (float64, error) {
-	if crypto != "USDT" && crypto != "USDC" {
+// getOkxTokenCnySellPrice  Okx  C2C快捷交易 Token出售 实时汇率
+func getOkxTokenCnySellPrice(ctx context.Context, crypto string) (float64, error) {
+	if crypto != "USDT" && crypto != "USDC" && crypto != "BNB" && crypto != "ETH" {
 		return 0, errors.New("unsupported crypto:" + crypto)
 	}
 

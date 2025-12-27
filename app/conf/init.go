@@ -69,6 +69,16 @@ func GetTrxRate() string {
 	return cfg.Pay.TrxRate
 }
 
+func GetEthRate() string {
+
+	return cfg.Pay.EthRate
+}
+
+func GetBnbRate() string {
+
+	return cfg.Pay.BnbRate
+}
+
 func GetUsdtAtomicity() (decimal.Decimal, int) {
 	var val = defaultUsdtAtomicity
 	if cfg.Pay.UsdtAtom != 0 {
@@ -98,6 +108,30 @@ func GetTrxAtomicity() (decimal.Decimal, int) {
 	if cfg.Pay.TrxAtom != 0 {
 
 		val = cfg.Pay.TrxAtom
+	}
+
+	var atom = decimal.NewFromFloat(val)
+
+	return atom, cast.ToInt(math.Abs(float64(atom.Exponent())))
+}
+
+func GetEthAtomicity() (decimal.Decimal, int) {
+	var val = defaultEthAtomicity
+	if cfg.Pay.EthAtom != 0 {
+
+		val = cfg.Pay.EthAtom
+	}
+
+	var atom = decimal.NewFromFloat(val)
+
+	return atom, cast.ToInt(math.Abs(float64(atom.Exponent())))
+}
+
+func GetBnbAtomicity() (decimal.Decimal, int) {
+	var val = defaultBnbAtomicity
+	if cfg.Pay.BnbAtom != 0 {
+
+		val = cfg.Pay.BnbAtom
 	}
 
 	var atom = decimal.NewFromFloat(val)
@@ -218,6 +252,44 @@ func GetPaymentAmountMax() decimal.Decimal {
 	if cfg.Pay.PaymentAmountMax != 0 {
 
 		val = cfg.Pay.PaymentAmountMax
+	}
+
+	return decimal.NewFromFloat(val)
+}
+
+// ETH 限额读取
+func GetPaymentAmountEthMin() decimal.Decimal {
+	var val = defaultPaymentEthMinAmount
+	if cfg.Pay.PaymentAmountEthMin != 0 {
+		val = cfg.Pay.PaymentAmountEthMin
+	}
+
+	return decimal.NewFromFloat(val)
+}
+
+func GetPaymentAmountEthMax() decimal.Decimal {
+	var val float64 = defaultPaymentEthMaxAmount
+	if cfg.Pay.PaymentAmountEthMax != 0 {
+		val = cfg.Pay.PaymentAmountEthMax
+	}
+
+	return decimal.NewFromFloat(val)
+}
+
+// BNB 限额读取
+func GetPaymentAmountBnbMin() decimal.Decimal {
+	var val = defaultPaymentBnbMinAmount
+	if cfg.Pay.PaymentAmountBnbMin != 0 {
+		val = cfg.Pay.PaymentAmountBnbMin
+	}
+
+	return decimal.NewFromFloat(val)
+}
+
+func GetPaymentAmountBnbMax() decimal.Decimal {
+	var val float64 = defaultPaymentBnbMaxAmount
+	if cfg.Pay.PaymentAmountBnbMax != 0 {
+		val = cfg.Pay.PaymentAmountBnbMax
 	}
 
 	return decimal.NewFromFloat(val)

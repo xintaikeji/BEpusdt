@@ -22,11 +22,15 @@ const (
 	TokenTypeUSDT TokenType = "USDT"
 	TokenTypeUSDC TokenType = "USDC"
 	TokenTypeTRX  TokenType = "TRX"
+	TokenTypeETH  TokenType = "ETH"
+	TokenTypeBNB  TokenType = "BNB"
 )
 
 // SupportTradeTypes 目前支持的收款交易类型
 var SupportTradeTypes = []string{
 	OrderTradeTypeTronTrx,
+	OrderTradeTypeEthErc20,
+	OrderTradeTypeBnbBep20,
 	OrderTradeTypeUsdtTrc20,
 	OrderTradeTypeUsdtErc20,
 	OrderTradeTypeUsdtBep20,
@@ -72,6 +76,12 @@ var tradeTypeTable = map[string]TokenType{
 
 	// TRX
 	OrderTradeTypeTronTrx: TokenTypeTRX,
+
+	// ETH
+	OrderTradeTypeEthErc20: TokenTypeETH,
+
+	// BNB
+	OrderTradeTypeBnbBep20: TokenTypeBNB,
 }
 
 type WalletAddress struct {
@@ -218,6 +228,10 @@ func (wa *WalletAddress) GetTokenDecimals() int32 {
 		return conf.UsdcSolanaDecimals
 	case OrderTradeTypeUsdcAptos:
 		return conf.UsdcAptosDecimals
+	case OrderTradeTypeEthErc20:
+		return conf.EthErc20Decimals
+	case OrderTradeTypeBnbBep20:
+		return conf.BnbBep20Decimals
 	default:
 		return -6
 	}
@@ -249,6 +263,10 @@ func (wa *WalletAddress) GetEvmRpcEndpoint() string {
 		return conf.GetArbitrumRpcEndpoint()
 	case OrderTradeTypeUsdcBase:
 		return conf.GetBaseRpcEndpoint()
+	case OrderTradeTypeEthErc20:
+		return conf.GetEthereumRpcEndpoint()
+	case OrderTradeTypeBnbBep20:
+		return conf.GetBscRpcEndpoint()
 	default:
 		return ""
 	}

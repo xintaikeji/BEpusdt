@@ -7,6 +7,7 @@ import (
 
 	"github.com/shopspring/decimal"
 	"github.com/v03413/bepusdt/app/conf"
+	"github.com/v03413/bepusdt/app/model"
 )
 
 type task struct {
@@ -43,14 +44,27 @@ func register(t task) {
 	tasks = append(tasks, t)
 }
 
-func inAmountRange(payAmount decimal.Decimal) bool {
-	if payAmount.GreaterThan(conf.GetPaymentAmountMax()) {
+// 按 tradeType 参数读取限额范围
+func inAmountRange(payAmount decimal.Decimal, tradeType string) bool {
+	var min, max decimal.Decimal
+	
+	switch tradeType {
+	case model.OrderTradeTypeEthErc20:
+		min = conf.GetPaymentAmountEthMin()
+		max = conf.GetPaymentAmountEthMax()
+	case model.OrderTradeTypeBnbBep20:
+		min = conf.GetPaymentAmountBnbMin()
+		max = conf.GetPaymentAmountBnbMax()
+	default:
+		min = conf.GetPaymentAmountMin()
+		max = conf.GetPaymentAmountMax()
+	}
 
+	if payAmount.GreaterThan(max) {
 		return false
 	}
 
-	if payAmount.LessThan(conf.GetPaymentAmountMin()) {
-
+	if payAmount.LessThan(min) {
 		return false
 	}
 

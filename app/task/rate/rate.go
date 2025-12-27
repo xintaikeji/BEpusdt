@@ -13,14 +13,28 @@ import (
 var okxTrxCnyCalcRate = 0.0
 var okxUsdtCnyCalcRate = 0.0
 var okxUsdcCnyCalcRate = 0.0
+var okxEthCnyCalcRate = 0.0
+var okxBnbCnyCalcRate = 0.0
 var okxUsdtCnyRawRate = conf.DefaultUsdtCnyRate // okx 交易所 usdt/cny 原始汇率；6.4是初始默认值值，后续但凡有新的汇率数据更新都会覆盖这个值
 var okxUsdcCnyRawRate = conf.DefaultUsdcCnyRate // okx 交易所 usdc/cny 原始汇率；6.4是初始默认值值，后续但凡有新的汇率数据更新都会覆盖这个值
+var okxEthCnyRawRate = conf.DefaultEthCnyRate   // okx 交易所 eth/cny 原始汇率
+var okxBnbCnyRawRate = conf.DefaultBnbCnyRate   // okx 交易所 bnb/cny 原始汇率
 var okxTrxCnyRawRate = conf.DefaultTrxCnyRate   // okx 交易所 trx/cny 原始汇率
 var okxRatePrecision = 2                        // 汇率保留位数，强迫症，另一方面两位小数足以覆盖大部分CNY使用场景
 
 func GetTrxCalcRate() float64 {
 
 	return okxTrxCnyCalcRate
+}
+
+func GetEthCalcRate() float64 {
+
+	return okxEthCnyCalcRate
+}
+
+func GetBnbCalcRate() float64 {
+
+	return okxBnbCnyCalcRate
 }
 
 func GetUsdtCalcRate() float64 {
@@ -43,6 +57,16 @@ func GetOkxUsdcRawRate() float64 {
 	return okxUsdcCnyRawRate
 }
 
+func GetOkxEthRawRate() float64 {
+
+	return okxEthCnyRawRate
+}
+
+func GetOkxBnbRawRate() float64 {
+
+	return okxBnbCnyRawRate
+}
+
 func GetOkxTrxRawRate() float64 {
 
 	return okxTrxCnyRawRate
@@ -52,6 +76,18 @@ func SetOkxTrxCnyRate(syntax string, rawRate float64) {
 	rawRate = round(rawRate, okxRatePrecision)
 	okxTrxCnyRawRate = rawRate
 	okxTrxCnyCalcRate = ParseFloatRate(syntax, rawRate)
+}
+
+func SetOkxEthCnyRate(syntax string, rawRate float64) {
+	rawRate = round(rawRate, okxRatePrecision)
+	okxEthCnyRawRate = rawRate
+	okxEthCnyCalcRate = ParseFloatRate(syntax, rawRate)
+}
+
+func SetOkxBnbCnyRate(syntax string, rawRate float64) {
+	rawRate = round(rawRate, okxRatePrecision)
+	okxBnbCnyRawRate = rawRate
+	okxBnbCnyCalcRate = ParseFloatRate(syntax, rawRate)
 }
 
 func SetOkxUsdtCnyRate(syntax string, rawRate float64) {

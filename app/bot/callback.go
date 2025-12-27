@@ -554,8 +554,18 @@ func aptTokenBalanceOf(wa model.WalletAddress) string {
 }
 
 func evmTokenBalanceOf(wa model.WalletAddress) string {
-	var jsonData = []byte(fmt.Sprintf(`{"jsonrpc":"2.0","id":%d,"method":"eth_call","params":[{"from":"0x0000000000000000000000000000000000000000","data":"0x70a08231000000000000000000000000%s","to":"%s"},"latest"]}`,
-		time.Now().Unix(), strings.ToLower(strings.Trim(wa.Address, "0x")), strings.ToLower(wa.GetTokenContract())))
+	var jsonData []byte
+	// 如果是原生代币，使用 eth_getBalance 查询原生币余额
+	if wa.TradeType == model.OrderTradeTypeBnbBep20 ||
+		wa.TradeType == model.OrderTradeTypeEthErc20 {
+		jsonData = []byte(fmt.Sprintf(`{"jsonrpc":"2.0","id":%d,"method":"eth_getBalance","params":["%s","latest"]}`,
+			time.Now().Unix(), wa.Address))
+	} else {
+		// 其它代币继续使用 eth_call 查询合约余额
+		jsonData = []byte(fmt.Sprintf(`{"jsonrpc":"2.0","id":%d,"method":"eth_call","params":[{"from":"0x0000000000000000000000000000000000000000","data":"0x70a08231000000000000000000000000%s","to":"%s"},"latest"]}`,
+			time.Now().Unix(), strings.ToLower(strings.Trim(wa.Address, "0x")), strings.ToLower(wa.GetTokenContract())))
+	}
+
 	var client = &http.Client{Timeout: time.Second * 5}
 	resp, err := client.Post(wa.GetEvmRpcEndpoint(), "application/json", bytes.NewBuffer(jsonData))
 	if err != nil {
